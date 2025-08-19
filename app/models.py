@@ -3,9 +3,9 @@ from sqlalchemy import String, Integer, Boolean, ForeignKey, DateTime, Text, Tab
 from app.db import Base
 import datetime
 
-# =========================
+
 # Association Tables
-# =========================
+
 club_members = Table(
     "club_members", Base.metadata,
     Column("club_id", Integer, ForeignKey("clubs.id"), primary_key=True),
@@ -24,9 +24,9 @@ hackathon_team_members = Table(
     Column("user_id", Integer, ForeignKey("users.id"), primary_key=True)
 )
 
-# =========================
+
 # Core Models
-# =========================
+
 class User(Base):
     __tablename__ = "users"
 
