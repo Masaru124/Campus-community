@@ -32,11 +32,10 @@ def auth_header(token):
 def smoke():
     # users
     suffix = ''.join(random.choices(string.ascii_lowercase+string.digits, k=4))
-    campus_domain = "@college.edu"
-    admin_email = f"admin{suffix}{campus_domain}"
-    fac_email = f"faculty{suffix}{campus_domain}"
-    stu_email = f"student{suffix}{campus_domain}"
-    alu_email = f"alumni{suffix}{campus_domain}"
+    admin_email = f"admin{suffix}@example.com"
+    fac_email = f"faculty{suffix}@example.com"
+    stu_email = f"student{suffix}@example.com"
+    alu_email = f"alumni{suffix}@example.com"
     admin = reg_login(admin_email, "Passw0rd!", "admin")
     faculty = reg_login(fac_email, "Passw0rd!", "faculty")
     student = reg_login(stu_email, "Passw0rd!", "student")

@@ -5,19 +5,13 @@ from app.db import get_db
 from app import models, schemas
 from app.auth import hash_password, verify_password, create_access_token
 from app.deps import get_current_user
-from app.config import settings
 import re, os, shutil, secrets
 
 router = APIRouter()
 email_codes = {}  # demo store: {email: code}
 
-def is_campus_email(email: str) -> bool:
-    return email.endswith(settings.CAMPUS_EMAIL_DOMAIN)
-
 @router.post("/register", response_model=schemas.UserOut)
 def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    if not is_campus_email(user.email):
-        raise HTTPException(400, detail=f"Must use campus email ending with {settings.CAMPUS_EMAIL_DOMAIN}")
     existing = db.query(models.User).filter(models.User.email == user.email).first()
     if existing:
         raise HTTPException(status_code=400, detail="Email already registered")

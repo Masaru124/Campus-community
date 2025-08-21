@@ -8,7 +8,6 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     DATABASE_URL: str = "sqlite:///./campus.db"
     UPLOAD_DIR: str = "storage/uploads"
-    CAMPUS_EMAIL_DOMAIN: str = "@college.edu"
 
     class Config:
         env_file = ".env"
