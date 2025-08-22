@@ -75,6 +75,20 @@ class ClubPostOut(ClubPostCreate):
         from_attributes = True
 
 # ---------- Forum ----------
+class PostCreate(BaseModel):
+    title: str
+    content: str
+
+class PostOut(BaseModel):
+    id: int
+    title: str
+    content: str
+    author_id: int
+    created_at: datetime.datetime
+    upvotes: int
+    class Config:
+        from_attributes = True
+
 class QuestionCreate(BaseModel):
     title: str
     body: str

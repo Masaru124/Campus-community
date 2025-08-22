@@ -58,6 +58,10 @@ def smoke():
     r = requests.post(f"{BASE}/forum/questions/{qid}/answers", json={"body":"Use Timsort"}, headers=auth_header(faculty)); ans = r.json(); pr("answer", ans)
     r = requests.post(f"{BASE}/forum/questions/{qid}/upvote", headers=auth_header(alumni)); pr("q upvote", r.json())
     r = requests.post(f"{BASE}/forum/answers/{ans['id']}/upvote", headers=auth_header(student)); pr("a upvote", r.json())
+    
+    # forum posts (new endpoints)
+    r = requests.post(f"{BASE}/forum/posts", json={"title":"Welcome to the forum!", "content":"This is my first post"}, headers=auth_header(student)); post = r.json(); pr("post create", post)
+    r = requests.get(f"{BASE}/forum/posts"); posts = r.json(); pr("posts list", posts)
 
     # projects
     r = requests.post(f"{BASE}/projects/", json={"title":"App", "description":"Cool app", "github":"", "demo_url":""}, headers=auth_header(student)); proj = r.json(); pr("project", proj)

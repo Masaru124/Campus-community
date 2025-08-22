@@ -7,6 +7,18 @@ from app.deps import get_current_user
 
 router = APIRouter()
 
+@router.post("/posts", response_model=schemas.PostOut)
+def create_post(payload: schemas.PostCreate, db: Session = Depends(get_db), user: models.User = Depends(get_current_user)):
+    # Use the Question model but treat it as a simple post
+    q = models.Question(title=payload.title, body=payload.content, tags="", author_id=user.id)
+    db.add(q); db.commit(); db.refresh(q)
+    return schemas.PostOut(id=q.id, title=q.title, content=q.body, author_id=q.author_id, created_at=q.created_at, upvotes=q.upvotes)
+
+@router.get("/posts", response_model=List[schemas.PostOut])
+def list_posts(db: Session = Depends(get_db)):
+    data = db.query(models.Question).order_by(models.Question.created_at.desc()).all()
+    return [schemas.PostOut(id=q.id, title=q.title, content=q.body, author_id=q.author_id, created_at=q.created_at, upvotes=q.upvotes) for q in data]
+
 @router.post("/questions", response_model=schemas.QuestionOut)
 def create_question(payload: schemas.QuestionCreate, db: Session = Depends(get_db), user: models.User = Depends(get_current_user)):
     q = models.Question(title=payload.title, body=payload.body, tags=",".join(payload.tags), author_id=user.id)
