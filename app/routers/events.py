@@ -3,12 +3,12 @@ from sqlalchemy.orm import Session
 from typing import List
 from app.db import get_db
 from app import models, schemas
-from app.deps import get_current_user
+from app.deps import get_current_user, require_admin
 
 router = APIRouter()
 
 @router.post("/", response_model=schemas.EventOut)
-def create_event(payload: schemas.EventCreate, db: Session = Depends(get_db), user: models.User = Depends(get_current_user)):
+def create_event(payload: schemas.EventCreate, db: Session = Depends(get_db), user: models.User = Depends(require_admin)):
     e = models.Event(title=payload.title, description=payload.description, category=payload.category,
                      starts_at=payload.starts_at, ends_at=payload.ends_at, location=payload.location, created_by=user.id)
     db.add(e); db.commit(); db.refresh(e)

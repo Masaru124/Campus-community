@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.db import get_db
 from app import models
 from app.auth import decode_token
+from app.constants import ADMIN_ROLES
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
@@ -20,3 +21,9 @@ def require_role(*roles: str):
             raise HTTPException(status_code=403, detail="Insufficient permissions")
         return user
     return checker
+
+def require_admin(user: models.User = Depends(get_current_user)):
+    """Require user to have admin role (teacher, hod, club_leader)"""
+    if user.role not in ADMIN_ROLES:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    return user
